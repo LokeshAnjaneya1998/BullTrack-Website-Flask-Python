@@ -14,7 +14,7 @@ def home():
 
 @app.route('/image')
 def serve_image():
-    return send_file('./img/fullusflogo.png', mimetype='image/png')
+    return send_file('./static/images/fullusflogo.png', mimetype='image/png')
 
 @app.route('/view', methods=['GET'])
 def view():
