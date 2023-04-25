@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request,send_file
 from services.data_service import DataService
 
 app = Flask(__name__)
@@ -6,11 +6,15 @@ app = Flask(__name__)
 dataService = DataService()
 
 @app.route("/")
+
 @app.route("/home")
 def home():
-    
+
     return render_template('home.html', data=dataService.getData(), upcoming_events=dataService.getUpcomingEvents())
 
+@app.route('/image')
+def serve_image():
+    return send_file('./img/fullusflogo.png', mimetype='image/png')
 
 @app.route('/view', methods=['GET'])
 def view():
