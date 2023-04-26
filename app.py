@@ -70,13 +70,24 @@ def viewEvents():
     displayData = connection.get_data('eventsdata')
     return render_template('view_wishlist.html', display=displayData)
 
-@app.route('/deleteJob', methods=['POST'])
-def delete():
-    job_data = request.get_json()
-    dataService.deleteJob(job_id=job_data['job_id'])
-    print('delete called')
-    response = {"status": "Success"}
-    return jsonify(response)
+@app.route('/deleteJob/<int:id>/<string:dataTable>', methods=['POST'])
+def deleteJob(dataTable, id):
+    if dataTable == 'WISHLIST':
+        dataTable = "wishlistdata"
+        display = 'viewWishlist'
+    if dataTable == 'IN_PROCESS':
+        dataTable = "inprocessdata"
+        display = 'viewInprocess'
+    if dataTable == 'APPLIED':
+        dataTable = "applieddata"
+        display = 'viewApplied'
+    if dataTable == 'OFFER':
+        dataTable = "offerdata"
+        display = 'viewOffers'
+    print(dataTable)
+    connection.delete_data(dataTable, id)
+    print(id)
+    return redirect(url_for(display))
 
 @app.route('/updateJobStatus', methods=['POST'])
 def updateJobStatus():

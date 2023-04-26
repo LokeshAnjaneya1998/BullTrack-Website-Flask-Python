@@ -40,7 +40,11 @@
                 </div>
             </td>
             <td>
-                <button class="btn btn-danger" style="margin-left: 10px;" onclick="deleteJob('{{ id }}')"><img src="https://icons.getbootstrap.com/assets/icons/trash.svg"></button>
+                <form action="{{ url_for('deleteJob', id=content.id, dataTable=content.job_status) }}" method="post">
+                    <div hidden name="rowNum" id="rowNum">{{content.id}}</div>
+                    <div hidden name="status_dropdown" id="status_dropdown" >{{content.job_status}}</div>
+                <button class="btn btn-danger" style="margin-left: 10px;"><img src="https://icons.getbootstrap.com/assets/icons/trash.svg"></button>
+                </form>
             </td>
         </tr>
         {% endfor %}

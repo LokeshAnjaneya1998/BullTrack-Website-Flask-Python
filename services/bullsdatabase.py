@@ -17,7 +17,16 @@ def get_data(dataTable):
     connection = sqlite3.connect('./models/bullsDataBase.db')
     dbrequest = connection.cursor()
     dbrequest.execute("SELECT * FROM {} ORDER BY applied_on".format(dataTable))
-    displayData = [{'company_name': row[1], 'job_role': row[2], 'applied_on': row[3], 'location': row[4], \
+    displayData = [{'id': row[0], 'company_name': row[1], 'job_role': row[2], 'applied_on': row[3], 'location': row[4], \
                     'salary': row[5], 'job_status': row[6]} for row in dbrequest.fetchall()]
     connection.close()
     return displayData
+
+def delete_data(dataTable, id):
+    print(dataTable)
+    print(id)
+    connection = sqlite3.connect('./models/bullsDataBase.db')
+    dbrequest = connection.cursor()
+    dbrequest.execute("DELETE FROM {} WHERE id = ?".format(dataTable), (id,))
+    connection.commit()
+    connection.close()
