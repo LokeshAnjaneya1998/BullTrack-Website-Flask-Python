@@ -1,15 +1,10 @@
 {% extends "layout/base-2-col.html" %} {% block content %}
 
-<script>
-    function doSomething() {
-        console.log("Button Clicked");
-    }
-</script>
 
 <table class="table table-striped" style="color: #A9B4AC;">
     <thead>
         <tr>
-            <th scope="col">Companys</th>
+            <th scope="col">Company</th>
             <th scope="col">Job Role</th>
             <th scope="col">Applied On</th>
             <th scope="col">Location</th>
@@ -19,22 +14,22 @@
 
     </thead>
     <tbody>
-        {% for item in data %}
+        {% for content in display %}
         <tr>
-            <th scope="row">{{ item['company'] }}</th>
-            <td>{{ item['job_role'] }}</td>
-            <td>{{ item['applied_on'] }}</td>
-            <td>{{ item['location'] }}</td>
-            <td>{{ item['salary'] }}</td>
+            <td scope="row">{{ content.company_name }}</td>
+            <td>{{ content.job_role }}</td>
+            <td>{{ content.applied_on }}</td>
+            <td>{{ content.location }}</td>
+            <td>{{ content.salary }}</td>
             <td>
                 <div class="row">
                     <!-- <div class="input-group-prepend"> -->
-                    {% set color_class = {"IN_PROCESS": "btn-primary", "APPLIED": "btn-info", "OFFER": "btn-success", "REJECT": "btn-danger"}[item['status']] | default("btn-secondary") %}
-                    <button class="btn {{ color_class }} dropdown-toggle" type="button" data-toggle="dropdown">{{ item['status'] }}</button>
+                    {% set color_class = {"IN_PROCESS": "btn-primary", "APPLIED": "btn-info", "OFFER": "btn-success", "REJECT": "btn-danger"}[content['job_status']] | default("btn-secondary") %}
+                    <button class="btn {{ color_class }} dropdown-toggle" type="button" data-toggle="dropdown">{{ content.job_status }}</button>
                     <div class="dropdown-menu">
                         <p class="dropdown-item disabled">Change to</p>
                         <div role="separator" class="dropdown-divider"></div>
-                        {% set id = item['id'] %}
+                        {% set id = content.id %}
                         <a class="dropdown-item btn-secondary" onclick="updateJobStatus('{{ id }}', 'WISHLIST')">WISHLIST</a>
                         <a class="dropdown-item" onclick="updateJobStatus('{{ id }}', 'IN_PROCESS')">IN_PROCESS</a>
                         <a class="dropdown-item btn-info" onclick="updateJobStatus('{{ id }}', 'APPLIED')">APPLIED</a>

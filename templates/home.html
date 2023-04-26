@@ -6,12 +6,14 @@
             <h5 class="card-title">Wish List</h5>
         </div>
         <ul class="list-group list-group-flush">
-            {% for item in data.wishlist %}
-            <li class="list-group-item border-0">{{ item }}</li>
+            {% for content in displayWish %}
+            {% if loop.index <= 3 %}
+            <li class="list-group-item border-0">{{ content.company_name }}</li>
+            {% endif %}
             {% endfor %}
         </ul>
         <div class="card-body">
-            <a href="/view?show=wish_list" class="card-link">View More</a>
+            <a href="/viewWishlist?show=wish_list" class="card-link">View More</a>
             <a href="#" class="card-link" data-toggle="modal" data-target="#exampleModalCenter">Add New</a>
         </div>
     </div>
@@ -22,12 +24,14 @@
             <h5 class="card-title">In Process</h5>
         </div>
         <ul class="list-group list-group-flush">
-            {% for item in data.inprogress %}
-            <li class="list-group-item border-0">{{ item }}</li>
+            {% for content in displayInp %}
+            {% if loop.index <= 3 %}
+            <li class="list-group-item border-0">{{ content.company_name }}</li>
+            {% endif %}
             {% endfor %}
         </ul>
         <div class="card-body">
-            <a href="/view?show=in_progress" class="card-link">View More</a>
+            <a href="/viewInprocess?show=in_progress" class="card-link">View More</a>
             <a href="#" class="card-link" data-toggle="modal" data-target="#exampleModalCenter">Add New</a>
         </div>
     </div>
@@ -40,13 +44,14 @@
             <h5 class="card-title">Applied</h5>
         </div>
         <ul class="list-group list-group-flush">
-            {% for item in data.applied %}
-            <li class="list-group-item border-0">{{ item }}</li>
+            {% for content in displayApp %}
+            {% if loop.index <= 3 %}
+            <li class="list-group-item border-0">{{ content.company_name }}</li>
+            {% endif %}
             {% endfor %}
-
         </ul>
         <div class="card-body">
-            <a href="/view?show=applied" class="card-link">View More</a>
+            <a href="/viewApplied?show=applied" class="card-link">View More</a>
             <a href="#" class="card-link" data-toggle="modal" data-target="#exampleModalCenter">Add New</a>
         </div>
     </div>
@@ -57,12 +62,14 @@
             <h5 class="card-title">Offers</h5>
         </div>
         <ul class="list-group list-group-flush">
-            {% for item in data.offers %}
-            <li class="list-group-item border-0">{{ item }}</li>
+            {% for content in displayOff %}
+            {% if loop.index <= 3 %}
+            <li class="list-group-item border-0">{{ content.company_name }}</li>
+            {% endif %}
             {% endfor %}
         </ul>
         <div class="card-body">
-            <a href="/view?show=offers" class="card-link">View More</a>
+            <a href="/viewOffers?show=offers" class="card-link">View More</a>
             <a href="#" class="card-link" data-toggle="modal" data-target="#exampleModalCenter">Add New</a>
 
         </div>
@@ -80,7 +87,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="/submit" method="post">
+            <form action="/addJob" method="post">
                 <div class="modal-body" style="text-align: left;">
                     <div class="form-group">
                         <label for="exampleInputName">Company Name</label>

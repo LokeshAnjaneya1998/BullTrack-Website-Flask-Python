@@ -11,7 +11,11 @@ dataService = DataService()
 @app.route("/home")
 def home():
 
-    return render_template('home.html', data=dataService.getData(), upcoming_events=dataService.getUpcomingEvents())
+    return render_template('home.html', data=dataService.getData(), displayWish=connection.get_data('wishlistdata'), \
+                            displayInp=connection.get_data('inprocessdata'), \
+                            displayApp=connection.get_data('applieddata'), \
+                            displayOff=connection.get_data('offerdata'), \
+                           upcoming_events=dataService.getUpcomingEvents())
 
 @app.route('/image')
 def serve_image():
@@ -21,11 +25,7 @@ def serve_image():
 def view():
     return render_template('view_list.html', data=dataService.getAllJobData())
 
-@app.route('/viewWishlist', methods=['GET'])
-def viewWishlist():
-    return render_template('view_wishlist.html')
-
-@app.route('/submit', methods=['POST'])
+@app.route('/addJob', methods=['POST'])
 def addNewJob():
     company_name = request.form['company_name']
     job_role = request.form['job_profile']
@@ -43,7 +43,32 @@ def addNewJob():
     if job_status == 'OFFER':
         dataTable = "offerdata"
     connection.insert_data(dataTable, company_name, job_role, applied_on, location, salary, job_status)
-    return redirect(url_for('viewWishlist'))
+    return redirect(url_for('home'))
+
+@app.route('/viewWishlist')
+def viewWishlist():
+    displayData = connection.get_data('wishlistdata')
+    return render_template('view_wishlist.html', display=displayData)
+
+@app.route('/viewInprocess')
+def viewInprocess():
+    displayData = connection.get_data('inprocessdata')
+    return render_template('view_wishlist.html', display=displayData)
+
+@app.route('/viewApplied')
+def viewApplied():
+    displayData = connection.get_data('applieddata')
+    return render_template('view_wishlist.html', display=displayData)
+
+@app.route('/viewOffers')
+def viewOffers():
+    displayData = connection.get_data('offerdata')
+    return render_template('view_wishlist.html', display=displayData)
+
+@app.route('/viewEvents')
+def viewEvents():
+    displayData = connection.get_data('eventsdata')
+    return render_template('view_wishlist.html', display=displayData)
 
 @app.route('/deleteJob', methods=['POST'])
 def delete():
