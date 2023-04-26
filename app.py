@@ -14,7 +14,8 @@ def home():
     return render_template('home.html', displayWish=connection.get_data('wishlistdata'),
                            displayInp=connection.get_data('inprocessdata'),
                            displayApp=connection.get_data('applieddata'),
-                           displayOff=connection.get_data('offerdata'))
+                           displayOff=connection.get_data('offerdata'),
+                           displayeve=connection.get_event_data('eventsdata'))
 
 
 @app.route('/image')
@@ -48,6 +49,19 @@ def addNewJob():
                            job_role, applied_on, location, salary, job_status)
     return redirect(url_for('home'))
 
+@app.route('/addEvent', methods=['POST'])
+def addEvent():
+    company_name = request.form['company_name']
+    job_role = request.form['job_profile']
+    event_name = request.form['eventName']
+    due_date = request.form['due_date']
+    connection.insert_event_data('eventsdata', company_name,job_role, event_name, due_date)
+    return redirect(url_for('home'))
+
+@app.route('/viewEvents')
+def viewEvents():
+    displayData = connection.get_event_data('eventsdata')
+    return render_template('home', display=displayData)
 
 @app.route('/viewWishlist')
 def viewWishlist():
@@ -70,12 +84,6 @@ def viewApplied():
 @app.route('/viewOffers')
 def viewOffers():
     displayData = connection.get_data('offerdata')
-    return render_template('view_wishlist.html', display=displayData)
-
-
-@app.route('/viewEvents')
-def viewEvents():
-    displayData = connection.get_data('eventsdata')
     return render_template('view_wishlist.html', display=displayData)
 
 
