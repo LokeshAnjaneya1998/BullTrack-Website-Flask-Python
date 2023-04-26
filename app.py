@@ -5,9 +5,6 @@ import services.bullsdatabase as connection
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '21c879ef1a404fe8cc172681bb290b9f'
 
-
-
-
 @app.route("/home")
 def home():
 
@@ -124,6 +121,9 @@ def updateJobStatus(dataTable, id, dataTableTargetValue):
     connection.update_data(dataTable, id, dataTableTargetValue)
     return redirect(url_for(display))
 
+@app.route("/logout")
+def logout():
+    return render_template('index.html', title='Logout')
 
 @app.route("/")
 @app.route("/index")
