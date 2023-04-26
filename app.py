@@ -121,6 +121,10 @@ def updateJobStatus(dataTable, id, dataTableTargetValue):
     connection.update_data(dataTable, id, dataTableTargetValue)
     return redirect(url_for(display))
 
+@app.route("/chart")
+def chart():
+    return render_template('chart.html', title='Chart')
+
 @app.route("/logout")
 def logout():
     return render_template('index.html', title='Logout')
