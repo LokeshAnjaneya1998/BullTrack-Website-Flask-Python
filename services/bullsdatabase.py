@@ -81,3 +81,14 @@ def update_data(dataTable, id, dataTableTargetValue):
         connection.commit()
 
     connection.close()
+
+def insert_signup_data(name,school,email, user_name, password):
+    connection = sqlite3.connect('./models/bullsDataBase.db')
+    dbrequest = connection.cursor()
+    dbrequest.execute("CREATE TABLE IF NOT EXISTS signupdata (id INTEGER PRIMARY KEY, name, school, email, user_name, password)")
+
+    connection.commit()
+    dbrequest.execute("INSERT INTO signupdata (name, school, email, user_name, password) \
+                      VALUES (?, ?, ?, ?, ?)", (name, school, email, user_name, password))
+    connection.commit()
+    connection.close()

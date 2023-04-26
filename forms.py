@@ -8,10 +8,6 @@ class RegistrationForm(FlaskForm):
                            validators=[DataRequired(), Length(min=2, max=20)])
     school = StringField('School',
                            validators=[DataRequired(), Length(min=2, max=50)])
-    city = StringField('City',
-                           validators=[DataRequired(), Length(min=2, max=20)])
-    state = StringField('State',
-                           validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
     username = StringField('Username',
