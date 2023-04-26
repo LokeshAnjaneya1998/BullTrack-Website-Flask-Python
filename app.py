@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request,send_file, url_for, flash, redirect
 from services.data_service import DataService
 from forms import RegistrationForm, LoginForm
+import services.bullsdatabase as connection
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '21c879ef1a404fe8cc172681bb290b9f'
@@ -20,12 +21,29 @@ def serve_image():
 def view():
     return render_template('view_list.html', data=dataService.getAllJobData())
 
-@app.route('/addNewJob', methods=['POST'])
+@app.route('/viewWishlist', methods=['GET'])
+def viewWishlist():
+    return render_template('view_wishlist.html')
+
+@app.route('/submit', methods=['POST'])
 def addNewJob():
-    job_data = request.get_json()
-    dataService.addJob(job_data)
-    response = {"status": "Success"}
-    return jsonify(response)
+    company_name = request.form['company_name']
+    job_role = request.form['job_profile']
+    applied_on = request.form['date_applied']
+    location = request.form['location']
+    salary = request.form['salary']
+    job_status = request.form['status']
+    dataTable = ""
+    if job_status == 'WISHLIST':
+        dataTable = "wishlistdata"
+    if job_status == 'IN_PROCESS':
+        dataTable = "inprocessdata"
+    if job_status == 'APPLIED':
+        dataTable = "applieddata"
+    if job_status == 'OFFER':
+        dataTable = "offerdata"
+    connection.insert_data(dataTable, company_name, job_role, applied_on, location, salary, job_status)
+    return redirect(url_for('viewWishlist'))
 
 @app.route('/deleteJob', methods=['POST'])
 def delete():
