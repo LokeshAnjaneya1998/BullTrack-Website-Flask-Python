@@ -46,3 +46,17 @@ body {
 .new-application-modal {
     color: black;
 }
+
+.greetingMsg p {
+    color: #ffffff;
+}
+
+.boarder {
+    padding: 20px 40px;
+}
+
+p {
+    text-align: justify;
+    color: #333;
+}
+
