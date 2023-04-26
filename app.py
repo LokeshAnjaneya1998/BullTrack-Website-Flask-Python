@@ -1,29 +1,31 @@
-from flask import Flask, render_template, jsonify, request,send_file, url_for, flash, redirect
-from services.data_service import DataService
+from flask import Flask, render_template, request, send_file, url_for, flash, redirect
 from forms import RegistrationForm, LoginForm
 import services.bullsdatabase as connection
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '21c879ef1a404fe8cc172681bb290b9f'
 
-dataService = DataService()
+
+
 
 @app.route("/home")
 def home():
 
-    return render_template('home.html', data=dataService.getData(), displayWish=connection.get_data('wishlistdata'), \
-                            displayInp=connection.get_data('inprocessdata'), \
-                            displayApp=connection.get_data('applieddata'), \
-                            displayOff=connection.get_data('offerdata'), \
-                           upcoming_events=dataService.getUpcomingEvents())
+    return render_template('home.html', displayWish=connection.get_data('wishlistdata'),
+                           displayInp=connection.get_data('inprocessdata'),
+                           displayApp=connection.get_data('applieddata'),
+                           displayOff=connection.get_data('offerdata'))
+
 
 @app.route('/image')
 def serve_image():
     return send_file('./static/images/fullusflogo.png', mimetype='image/png')
 
+
 @app.route('/view', methods=['GET'])
 def view():
-    return render_template('view_list.html', data=dataService.getAllJobData())
+    return render_template('view_list.html')
+
 
 @app.route('/addJob', methods=['POST'])
 def addNewJob():
@@ -42,33 +44,40 @@ def addNewJob():
         dataTable = "applieddata"
     if job_status == 'OFFER':
         dataTable = "offerdata"
-    connection.insert_data(dataTable, company_name, job_role, applied_on, location, salary, job_status)
+    connection.insert_data(dataTable, company_name,
+                           job_role, applied_on, location, salary, job_status)
     return redirect(url_for('home'))
+
 
 @app.route('/viewWishlist')
 def viewWishlist():
     displayData = connection.get_data('wishlistdata')
     return render_template('view_wishlist.html', display=displayData)
 
+
 @app.route('/viewInprocess')
 def viewInprocess():
     displayData = connection.get_data('inprocessdata')
     return render_template('view_wishlist.html', display=displayData)
+
 
 @app.route('/viewApplied')
 def viewApplied():
     displayData = connection.get_data('applieddata')
     return render_template('view_wishlist.html', display=displayData)
 
+
 @app.route('/viewOffers')
 def viewOffers():
     displayData = connection.get_data('offerdata')
     return render_template('view_wishlist.html', display=displayData)
 
+
 @app.route('/viewEvents')
 def viewEvents():
     displayData = connection.get_data('eventsdata')
     return render_template('view_wishlist.html', display=displayData)
+
 
 @app.route('/deleteJob/<int:id>/<string:dataTable>', methods=['POST'])
 def deleteJob(dataTable, id):
@@ -89,15 +98,24 @@ def deleteJob(dataTable, id):
     print(id)
     return redirect(url_for(display))
 
-@app.route('/updateJobStatus', methods=['POST'])
-def updateJobStatus():
-    job_data = request.get_json()
-    print(job_data)
-    job_id = job_data['job_id']
-    job_status = job_data['job_status']
-    dataService.updateJobStatus(job_id, newStatus=job_status)
-    response = {"status": job_status}
-    return jsonify(response)
+
+@app.route('/updateJobStatus/<int:id>/<string:dataTableTargetValue>/<string:dataTable>', methods=['POST'])
+def updateJobStatus(dataTable, id, dataTableTargetValue):
+    if dataTable == 'WISHLIST':
+        dataTable = "wishlistdata"
+        display = 'viewWishlist'
+    if dataTable == 'IN_PROCESS':
+        dataTable = "inprocessdata"
+        display = 'viewInprocess'
+    if dataTable == 'APPLIED':
+        dataTable = "applieddata"
+        display = 'viewApplied'
+    if dataTable == 'OFFER':
+        dataTable = "offerdata"
+        display = 'viewOffers'
+    connection.update_data(dataTable, id, dataTableTargetValue)
+    return redirect(url_for(display))
+
 
 @app.route("/")
 @app.route("/index")
@@ -129,6 +147,7 @@ def login():
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=7778)

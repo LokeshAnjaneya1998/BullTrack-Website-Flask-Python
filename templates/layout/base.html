@@ -90,15 +90,18 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Company</th>
+                                    <th scope="col">Event</th>
                                     <th scope="col">Due Date</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for item in upcoming_events %}
+                                {% for content in displayInp %}
                                 <tr>
-                                    <td>{{ item.company }}</td>
-                                    <td>{{ item.duedate }}</td>
+                                    <td>{{ content.company_name }}</td>
+                                    <td>Interview</td>
+                                    <td>{{ content.applied_on }}</td>
                                 </tr>
+
                                 {% endfor %}
                             </tbody>
                         </table>

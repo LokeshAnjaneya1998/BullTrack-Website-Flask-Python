@@ -60,9 +60,10 @@
         </div>
         <ul class="list-group list-group-flush">
             {% for content in displayOff %}
-            {% if loop.index <= 3 %} <li class="list-group-item border-0">{{ content.company_name }}</li>
-                {% endif %}
-                {% endfor %}
+            {% if loop.index <= 3 %}
+            <li class="list-group-item border-0">{{ content.company_name }}</li>
+            {% endif %}
+            {% endfor %}
         </ul>
         <div class="card-body">
             <a href="/viewOffers?show=offers" class="card-link">View More</a>
@@ -86,27 +87,27 @@
             <form action="/addJob" method="post">
                 <div class="modal-body" style="text-align: left;">
                     <div class="form-group">
-                        <label for="exampleInputName">Company Name</label>
+                        <label for="company_name">Company Name</label>
                         <input type="text" name="company_name" class="form-control" id="company_name"
                             placeholder="Enter Company Nmae" required="required">
                     </div>
                     <div class="form-group">
                         <label for="Location" required="required">Location</label>
                         <input type="text" name="location" class="form-control" id="location"
-                            placeholder="Enter Location">
+                            placeholder="Enter Location" required="required">
                     </div>
                     <div class="form-group">
                         <label for="JobProfile">Job Profile</label>
                         <input type="text" name="job_profile" class="form-control" id="job_profile"
-                            placeholder="Enter Job Profile">
+                            placeholder="Enter Job Profile" required="required">
                     </div>
                     <div class="form-group">
                         <label for="Salary">Salary</label>
-                        <input type="number" name="salary" class="form-control" id="salary" placeholder="Enter Salary">
+                        <input type="number" name="salary" class="form-control" id="salary" placeholder="Enter Salary" required="required">
                     </div>
                     <div class="form-group">
-                        <label for="Salary">Status</label>
-                        <select class="custom-select" name="status" id="status">
+                        <label for="status">Status</label>
+                        <select class="custom-select" name="status" id="status" required="required">
                             <option value="WISHLIST" selected>Wishlist</option>
                             <option value="IN_PROCESS">In Process</option>
                             <option value="APPLIED">Applied</option>
@@ -114,9 +115,9 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="example-date-input" class="col-3 col-form-label">Date Applied</label>
+                        <label for="example-date-input" class="col-3 col-form-label" >Date Applied</label>
                         <div class="col-10">
-                            <input class="form-control" name="date_applied" type="date" id="date_applied">
+                            <input class="form-control" name="date_applied" type="date" id="date_applied" required="required">
                         </div>
                     </div>
                 </div>

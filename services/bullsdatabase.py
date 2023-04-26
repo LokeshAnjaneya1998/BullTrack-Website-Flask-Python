@@ -23,10 +23,37 @@ def get_data(dataTable):
     return displayData
 
 def delete_data(dataTable, id):
-    print(dataTable)
-    print(id)
     connection = sqlite3.connect('./models/bullsDataBase.db')
     dbrequest = connection.cursor()
     dbrequest.execute("DELETE FROM {} WHERE id = ?".format(dataTable), (id,))
     connection.commit()
+    connection.close()
+
+def update_data(dataTable, id, dataTableTargetValue):
+    if dataTableTargetValue == 'WISHLIST':
+        dataTableTarget = "wishlistdata"
+    if dataTableTargetValue == 'IN_PROCESS':
+        dataTableTarget = "inprocessdata"
+    if dataTableTargetValue == 'APPLIED':
+        dataTableTarget = "applieddata"
+    if dataTableTargetValue == 'OFFER':
+        dataTableTarget = "offerdata"
+    connection = sqlite3.connect('./models/bullsDataBase.db')
+    dbrequest = connection.cursor()
+    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name TEXT,job_role TEXT,\
+                      applied_on TEXT,location TEXT,salary NUMERIC,job_status TEXT)".format(dataTableTarget))
+
+    connection.commit()
+    dbrequest.execute("SELECT * FROM {} WHERE id = ?".format(dataTable), (id,))
+    data = dbrequest.fetchone()
+
+    if data:
+        dbrequest.execute("INSERT INTO {} (company_name, job_role, applied_on, location, salary, job_status) \
+                          VALUES (?, ?, ?, ?, ?, ?)".format(dataTableTarget), (data[1], data[2], data[3], data[4], data[5], dataTableTargetValue))
+        connection.commit()
+
+
+        dbrequest.execute("DELETE FROM {} WHERE id = ?".format(dataTable), (id,))
+        connection.commit()
+
     connection.close()

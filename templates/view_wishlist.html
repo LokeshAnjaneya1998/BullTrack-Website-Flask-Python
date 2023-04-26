@@ -29,20 +29,24 @@
                     <div class="dropdown-menu">
                         <p class="dropdown-item disabled">Change to</p>
                         <div role="separator" class="dropdown-divider"></div>
-                        {% set id = content.id %}
-                        <a class="dropdown-item btn-secondary" onclick="updateJobStatus('{{ id }}', 'WISHLIST')">WISHLIST</a>
-                        <a class="dropdown-item" onclick="updateJobStatus('{{ id }}', 'IN_PROCESS')">IN_PROCESS</a>
-                        <a class="dropdown-item btn-info" onclick="updateJobStatus('{{ id }}', 'APPLIED')">APPLIED</a>
-                        <a class="dropdown-item btn-success" onclick="updateJobStatus('{{ id }}', 'OFFER')">OFFER</a>
-                        <a class="dropdown-item btn-danger" onclick="updateJobStatus('{{ id }}', 'REJECT')">REJECT</a>
+                        <form action="{{ url_for('updateJobStatus', dataTable=content.job_status, id=content.id, dataTableTargetValue = 'WISHLIST') }}" method="post">
+                        <button class="dropdown-item btn-secondary">WISHLIST</button>
+                        </form>
+                        <form action="{{ url_for('updateJobStatus', dataTable=content.job_status, id=content.id, dataTableTargetValue = 'IN_PROCESS') }}" method="post">
+                        <button class="dropdown-item">IN_PROCESS</button>
+                        </form>
+                        <form action="{{ url_for('updateJobStatus', dataTable=content.job_status, id=content.id, dataTableTargetValue = 'APPLIED') }}" method="post">
+                        <button class="dropdown-item btn-info">APPLIED</button>
+                        </form>
+                        <form action="{{ url_for('updateJobStatus', dataTable=content.job_status, id=content.id, dataTableTargetValue = 'OFFER') }}" method="post">
+                        <button class="dropdown-item btn-success">OFFER</button>
+                        </form>
                     </div>
                     <!-- </div> -->
                 </div>
             </td>
             <td>
                 <form action="{{ url_for('deleteJob', id=content.id, dataTable=content.job_status) }}" method="post">
-                    <div hidden name="rowNum" id="rowNum">{{content.id}}</div>
-                    <div hidden name="status_dropdown" id="status_dropdown" >{{content.job_status}}</div>
                 <button class="btn btn-danger" style="margin-left: 10px;"><img src="https://icons.getbootstrap.com/assets/icons/trash.svg"></button>
                 </form>
             </td>
