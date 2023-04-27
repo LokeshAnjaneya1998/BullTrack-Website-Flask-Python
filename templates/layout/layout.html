@@ -44,11 +44,11 @@
 
     <div class="container-fluid">
             <!-- Content -->
-            <div class="col-sm-9 text-left main-content">
+            <div class="col-sm-12 text-left main-content">
                 <center>
                     <main role="main" class="container">
                         <div class="row">
-                          <div class="col-md-8">
+                            <div class="col">
                             {% with messages = get_flashed_messages(with_categories=true) %}
                               {% if messages %}
                                 {% for category, message in messages %}
