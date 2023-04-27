@@ -12,7 +12,8 @@ def home():
                            displayInp=connection.get_data('inprocessdata'),
                            displayApp=connection.get_data('applieddata'),
                            displayOff=connection.get_data('offerdata'),
-                           displayeve=connection.get_event_data('eventsdata'))
+                           displayeve=connection.get_event_data('eventsdata'),
+                           userdisplay=connection.get_signup_data())
 
 
 @app.route('/image')
@@ -158,14 +159,23 @@ def register():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    userdisplayData = connection.get_signup_data()
     form = LoginForm()
     if form.validate_on_submit():
-        if form.email.data == 'admin@blog.com' and form.password.data == 'password':
-            flash('You have been logged in!', 'success')
+        uflag = "False"
+        for ids in userdisplayData:
+            username = ids['user_name']
+            password = ids['password']
+            print(username)
+            if form.username.data == username and form.password.data == password:
+                flash('You have been logged in!', 'success')
+                uflag = "True"
+        print(uflag)
+        if uflag == 'True':
             return redirect(url_for('home'))
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
-    return render_template('login.html', title='Login', form=form)
+    return render_template('login.html', title='Register', form=form)
 
 
 if __name__ == '__main__':

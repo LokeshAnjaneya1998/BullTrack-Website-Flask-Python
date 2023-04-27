@@ -92,3 +92,13 @@ def insert_signup_data(name,school,email, user_name, password):
                       VALUES (?, ?, ?, ?, ?)", (name, school, email, user_name, password))
     connection.commit()
     connection.close()
+
+def get_signup_data():
+   connection = sqlite3.connect('./models/bullsDataBase.db')
+   dbrequest = connection.cursor()
+   dbrequest.execute("CREATE TABLE IF NOT EXISTS signupdata (id INTEGER PRIMARY KEY, name, school, email, user_name, password)")
+   connection.commit()
+   dbrequest.execute("SELECT * FROM signupdata")
+   userdisplayData = [{'id': row[0], 'name': row[1], 'school': row[2], 'email': row[3], 'user_name': row[4], 'password': row[5]} for row in dbrequest.fetchall()]
+   connection.close()
+   return userdisplayData
