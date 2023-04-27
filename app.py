@@ -139,16 +139,26 @@ def about():
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
+    userdisplayData = connection.get_signup_data()
+
     if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')
-        print(form.username.data)
-        name = form.name.data
-        school = form.school.data
-        email = form.email.data
-        user_name = form.username.data
-        password = form.password.data
-        connection.insert_signup_data(name,school,email, user_name, password)
-        return redirect(url_for('login'))
+        v_flag = "False"
+        for ids in userdisplayData:
+            username = ids['user_name']
+            if form.username.data == username:
+                v_flag
+                v_flag = "True"
+                flash(f'User name {form.username.data} already exist! Please use another username', 'danger')
+        if v_flag == "False":
+            flash(f'Account created for {form.username.data}!', 'success')
+            print(form.username.data)
+            name = form.name.data
+            school = form.school.data
+            email = form.email.data
+            user_name = form.username.data
+            password = form.password.data
+            connection.insert_signup_data(name,school,email, user_name, password)
+            return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
 @app.route("/login", methods=['GET', 'POST'])
