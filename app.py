@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file, url_for, flash, redirect
+from flask import Flask, render_template, request, send_file, url_for, flash, redirect, session
 from forms import RegistrationForm, LoginForm
 import services.bullsdatabase as connection
 
@@ -156,7 +156,6 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     userdisplayData = connection.get_signup_data()
@@ -166,17 +165,22 @@ def login():
         for ids in userdisplayData:
             username = ids['user_name']
             password = ids['password']
+            userid = ids['id']
             print(username)
             if form.username.data == username and form.password.data == password:
                 flash('You have been logged in!', 'success')
                 uflag = "True"
+                connection.update_signup_flag(uflag, userid)
+            else:
+                uflag = "False"
+                connection.update_signup_flag(uflag, userid)
+
         print(uflag)
         if uflag == 'True':
             return redirect(url_for('home'))
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Register', form=form)
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=7778)

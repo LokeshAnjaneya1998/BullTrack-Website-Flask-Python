@@ -1,7 +1,44 @@
 import sqlite3
 
-def insert_event_data(dataTable, company_name,job_role, event_name, due_date):
+def insert_signup_data(name,school,email, user_name, password):
     connection = sqlite3.connect('./models/bullsDataBase.db')
+    dbrequest = connection.cursor()
+    dbrequest.execute("CREATE TABLE IF NOT EXISTS signupdata (id INTEGER PRIMARY KEY, name, school, email, user_name, password, flag)")
+
+    connection.commit()
+    dbrequest.execute("INSERT INTO signupdata (name, school, email, user_name, password) \
+                      VALUES (?, ?, ?, ?, ?)", (name, school, email, user_name, password))
+    connection.commit()
+    connection.close()
+
+def get_signup_data():
+   connection = sqlite3.connect('./models/bullsDataBase.db')
+   dbrequest = connection.cursor()
+   dbrequest.execute("CREATE TABLE IF NOT EXISTS signupdata (id INTEGER PRIMARY KEY, name, school, email, user_name, password, flag)")
+   connection.commit()
+   dbrequest.execute("SELECT * FROM signupdata")
+   userdisplayData = [{'id': row[0], 'name': row[1], 'school': row[2], 'email': row[3], 'user_name': row[4], 'password': row[5], 'flag': row[6]} for row in dbrequest.fetchall()]
+   connection.close()
+   return userdisplayData
+
+def update_signup_flag(flag, userid):
+   connection = sqlite3.connect('./models/bullsDataBase.db')
+   dbrequest = connection.cursor()
+   dbrequest.execute("CREATE TABLE IF NOT EXISTS signupdata (id INTEGER PRIMARY KEY, name, school, email, user_name, password, flag)")
+   connection.commit()
+   dbrequest.execute("UPDATE signupdata SET flag = ? WHERE id = ?",(flag, userid))
+   connection.commit()
+   connection.close()
+
+userdb = ""
+dbname = get_signup_data()
+for user in dbname:
+    if user['flag'] == 'True':
+        userdb = user['user_name'].replace(" ","")
+print(userdb)
+
+def insert_event_data(dataTable, company_name,job_role, event_name, due_date):
+    connection = sqlite3.connect('./models/'+userdb+'DataBase.db')
     dbrequest = connection.cursor()
     dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name, job_role, event_name, due_date)".format(dataTable))
 
@@ -12,7 +49,7 @@ def insert_event_data(dataTable, company_name,job_role, event_name, due_date):
     connection.close()
 
 def get_event_data(dataTable):
-   connection = sqlite3.connect('./models/bullsDataBase.db')
+   connection = sqlite3.connect('./models/'+userdb+'DataBase.db')
    dbrequest = connection.cursor()
    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name, job_role, event_name, due_date)".format(dataTable))
    connection.commit()
@@ -22,7 +59,7 @@ def get_event_data(dataTable):
    return displayData
 
 def insert_data(dataTable, company_name, job_role, applied_on, location, salary, job_status):
-    connection = sqlite3.connect('./models/bullsDataBase.db')
+    connection = sqlite3.connect('./models/'+userdb+'DataBase.db')
     dbrequest = connection.cursor()
     dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name TEXT,job_role TEXT,\
                       applied_on TEXT,location TEXT,salary NUMERIC,job_status TEXT)".format(dataTable))
@@ -34,9 +71,11 @@ def insert_data(dataTable, company_name, job_role, applied_on, location, salary,
     connection.close()
 
 def get_data(dataTable):
-    connection = sqlite3.connect('./models/bullsDataBase.db')
+    connection = sqlite3.connect('./models/'+userdb+'DataBase.db')
     dbrequest = connection.cursor()
-    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name, job_role, event_name, due_date)".format(dataTable))
+    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name TEXT,job_role TEXT,\
+                      applied_on TEXT,location TEXT,salary NUMERIC,job_status TEXT)".format(dataTable))
+
     connection.commit()
     dbrequest.execute("SELECT * FROM {} ORDER BY applied_on".format(dataTable))
     displayData = [{'id': row[0], 'company_name': row[1], 'job_role': row[2], 'applied_on': row[3], 'location': row[4], \
@@ -45,7 +84,7 @@ def get_data(dataTable):
     return displayData
 
 def delete_data(dataTable, id):
-    connection = sqlite3.connect('./models/bullsDataBase.db')
+    connection = sqlite3.connect('./models/'+userdb+'DataBase.db')
     dbrequest = connection.cursor()
     dbrequest.execute("DELETE FROM {} WHERE id = ?".format(dataTable), (id,))
     connection.commit()
@@ -60,9 +99,11 @@ def update_data(dataTable, id, dataTableTargetValue):
         dataTableTarget = "applieddata"
     if dataTableTargetValue == 'OFFER':
         dataTableTarget = "offerdata"
-    connection = sqlite3.connect('./models/bullsDataBase.db')
+    connection = sqlite3.connect('./models/'+userdb+'DataBase.db')
     dbrequest = connection.cursor()
-    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name, job_role, event_name, due_date)".format(dataTable))
+    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name TEXT,job_role TEXT,\
+                      applied_on TEXT,location TEXT,salary NUMERIC,job_status TEXT)".format(dataTable))
+
     connection.commit()
     dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name TEXT,job_role TEXT,\
                       applied_on TEXT,location TEXT,salary NUMERIC,job_status TEXT)".format(dataTableTarget))
@@ -82,23 +123,3 @@ def update_data(dataTable, id, dataTableTargetValue):
 
     connection.close()
 
-def insert_signup_data(name,school,email, user_name, password):
-    connection = sqlite3.connect('./models/bullsDataBase.db')
-    dbrequest = connection.cursor()
-    dbrequest.execute("CREATE TABLE IF NOT EXISTS signupdata (id INTEGER PRIMARY KEY, name, school, email, user_name, password)")
-
-    connection.commit()
-    dbrequest.execute("INSERT INTO signupdata (name, school, email, user_name, password) \
-                      VALUES (?, ?, ?, ?, ?)", (name, school, email, user_name, password))
-    connection.commit()
-    connection.close()
-
-def get_signup_data():
-   connection = sqlite3.connect('./models/bullsDataBase.db')
-   dbrequest = connection.cursor()
-   dbrequest.execute("CREATE TABLE IF NOT EXISTS signupdata (id INTEGER PRIMARY KEY, name, school, email, user_name, password)")
-   connection.commit()
-   dbrequest.execute("SELECT * FROM signupdata")
-   userdisplayData = [{'id': row[0], 'name': row[1], 'school': row[2], 'email': row[3], 'user_name': row[4], 'password': row[5]} for row in dbrequest.fetchall()]
-   connection.close()
-   return userdisplayData
