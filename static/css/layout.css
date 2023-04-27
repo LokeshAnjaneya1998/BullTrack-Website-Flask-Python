@@ -119,3 +119,11 @@ table.table1 td img {
 .boarder {
     padding: 20px 40px;
 }
+
+.section {
+    width: 50%;
+    height: 100%;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  }
