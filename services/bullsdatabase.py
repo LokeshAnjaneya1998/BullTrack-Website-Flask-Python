@@ -6,8 +6,8 @@ def insert_signup_data(name,school,email, user_name, password):
     dbrequest.execute("CREATE TABLE IF NOT EXISTS signupdata (id INTEGER PRIMARY KEY, name, school, email, user_name, password, flag)")
 
     connection.commit()
-    dbrequest.execute("INSERT INTO signupdata (name, school, email, user_name, password, flag) \
-                      VALUES (?, ?, ?, ?, ?)", (name, school, email, user_name, password, 'False'))
+    dbrequest.execute("INSERT INTO signupdata (name, school, email, user_name, password) \
+                      VALUES (?, ?, ?, ?, ?)", (name, school, email, user_name, password))
     connection.commit()
     connection.close()
 
