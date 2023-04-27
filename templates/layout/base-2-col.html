@@ -48,26 +48,35 @@
 
                     <div class="card" style="width: 18rem; text-align: left;">
                         <div class="card-body">
-                            <h5 class="card-title">Shishira K V</h5>
+                            {% for content in userdisplay %}
+                            {% if content.flag == 'True' %}
+                            <h5 class="card-title">{{content.name}}</h5>
                             <div class="row">
                                 <div class="col">
-                                    <b>Gender</b>
+                                    <b>School</b>
                                 </div>
                                 <div class="col">
-                                    Female
+                                    {{content.school}}
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col">
-                                    <b>Location</b>
+                                    <b>Email</b>
                                 </div>
                                 <div class="col">
-                                    Tampa, FL
+                                    {{content.email}}
                                 </div>
                             </div>
-
-
+                            <div class="row">
+                                <div class="col">
+                                    <b>User Name</b>
+                                </div>
+                                <div class="col">
+                                    {{content.user_name}}
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
 

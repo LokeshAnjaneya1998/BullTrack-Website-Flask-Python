@@ -6,8 +6,8 @@ def insert_signup_data(name,school,email, user_name, password):
     dbrequest.execute("CREATE TABLE IF NOT EXISTS signupdata (id INTEGER PRIMARY KEY, name, school, email, user_name, password, flag)")
 
     connection.commit()
-    dbrequest.execute("INSERT INTO signupdata (name, school, email, user_name, password) \
-                      VALUES (?, ?, ?, ?, ?)", (name, school, email, user_name, password))
+    dbrequest.execute("INSERT INTO signupdata (name, school, email, user_name, password, flag) \
+                      VALUES (?, ?, ?, ?, ?)", (name, school, email, user_name, password, 'False'))
     connection.commit()
     connection.close()
 
@@ -21,12 +21,12 @@ def get_signup_data():
    connection.close()
    return userdisplayData
 
-def update_signup_flag(flag, userid):
+def update_signup_flag(userflag, userid):
    connection = sqlite3.connect('./models/bullsDataBase.db')
    dbrequest = connection.cursor()
    dbrequest.execute("CREATE TABLE IF NOT EXISTS signupdata (id INTEGER PRIMARY KEY, name, school, email, user_name, password, flag)")
    connection.commit()
-   dbrequest.execute("UPDATE signupdata SET flag = ? WHERE id = ?",(flag, userid))
+   dbrequest.execute("UPDATE signupdata SET flag = ? WHERE id = ?",(userflag, userid))
    connection.commit()
    connection.close()
 

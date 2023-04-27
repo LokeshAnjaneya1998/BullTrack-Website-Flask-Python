@@ -21,11 +21,6 @@ def serve_image():
     return send_file('./static/images/fullusflogo.png', mimetype='image/png')
 
 
-@app.route('/view', methods=['GET'])
-def view():
-    return render_template('view_list.html')
-
-
 @app.route('/addJob', methods=['POST'])
 def addNewJob():
     company_name = request.form['company_name']
@@ -124,7 +119,7 @@ def updateJobStatus(dataTable, id, dataTableTargetValue):
 
 @app.route("/chart")
 def chart():
-    return render_template('chart.html', title='Chart')
+    return render_template('chart.html', title='Chart', userdisplay=connection.get_signup_data())
 
 @app.route("/logout")
 def logout():
@@ -170,10 +165,11 @@ def login():
             if form.username.data == username and form.password.data == password:
                 flash('You have been logged in!', 'success')
                 uflag = "True"
-                connection.update_signup_flag(uflag, userid)
+                userflag = "True"
+                connection.update_signup_flag(userflag, userid)
             else:
-                uflag = "False"
-                connection.update_signup_flag(uflag, userid)
+                userflag = "False"
+                connection.update_signup_flag(userflag, userid)
 
         print(uflag)
         if uflag == 'True':
