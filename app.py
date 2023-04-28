@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file, url_for, flash, redirect
+from flask import Flask, render_template, request, send_file, url_for, flash, redirect, jsonify
 from forms import RegistrationForm, LoginForm
 import services.bullsdatabase as connection
 
@@ -120,6 +120,20 @@ def updateJobStatus(dataTable, id, dataTableTargetValue):
 @app.route("/chart")
 def chart():
     return render_template('chart.html', title='Chart', userdisplay=connection.get_signup_data())
+
+@app.route("/chartdata")
+def chartdata():
+    wishchart = connection.chart_data('wishlistdata')
+    inpchart = connection.chart_data('inprocessdata')
+    appchart = connection.chart_data('applieddata')
+    offchart = connection.chart_data('offerdata')
+    data = {
+        'wishchart': wishchart,
+        'inpchart': inpchart,
+        'appchart': appchart,
+        'offchart': offchart
+    }
+    return jsonify(data)
 
 @app.route("/logout")
 def logout():

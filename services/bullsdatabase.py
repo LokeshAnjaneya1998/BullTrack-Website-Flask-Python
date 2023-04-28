@@ -125,11 +125,13 @@ def update_data(dataTable, id, dataTableTargetValue):
 
     connection.close()
 
-def chart_data(dataTable, id):
+def chart_data(dataTable):
     connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
     dbrequest = connection.cursor()
     dbrequest.execute("SELECT applied_on FROM {}".format(dataTable))
+    displayData = [{'applied_on': row[0]} for row in dbrequest.fetchall()]
 
     connection.commit()
     connection.close()
+    return displayData
 
