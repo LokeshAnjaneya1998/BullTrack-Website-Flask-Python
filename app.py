@@ -54,30 +54,30 @@ def addEvent():
 @app.route('/viewEvents')
 def viewEvents():
     displayData = connection.get_event_data('eventsdata')
-    return render_template('home', display=displayData)
+    return render_template('home', display=displayData, userdisplay=connection.get_signup_data())
 
 @app.route('/viewWishlist')
 def viewWishlist():
     displayData = connection.get_data('wishlistdata')
-    return render_template('view_wishlist.html', display=displayData)
+    return render_template('view_wishlist.html', display=displayData, userdisplay=connection.get_signup_data())
 
 
 @app.route('/viewInprocess')
 def viewInprocess():
     displayData = connection.get_data('inprocessdata')
-    return render_template('view_wishlist.html', display=displayData)
+    return render_template('view_wishlist.html', display=displayData, userdisplay=connection.get_signup_data())
 
 
 @app.route('/viewApplied')
 def viewApplied():
     displayData = connection.get_data('applieddata')
-    return render_template('view_wishlist.html', display=displayData)
+    return render_template('view_wishlist.html', display=displayData, userdisplay=connection.get_signup_data())
 
 
 @app.route('/viewOffers')
 def viewOffers():
     displayData = connection.get_data('offerdata')
-    return render_template('view_wishlist.html', display=displayData)
+    return render_template('view_wishlist.html', display=displayData, userdisplay=connection.get_signup_data())
 
 
 @app.route('/deleteJob/<int:id>/<string:dataTable>', methods=['POST'])
