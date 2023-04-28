@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, send_file, url_for, flash, redirect, jsonify
-from forms import RegistrationForm, LoginForm
 import services.bullsdatabase as connection
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '21c879ef1a404fe8cc172681bb290b9f'
+
 
 @app.route("/home")
 def home():
@@ -42,20 +45,24 @@ def addNewJob():
                            job_role, applied_on, location, salary, job_status)
     return redirect(url_for('home'))
 
+
 @app.route('/addEvent', methods=['POST'])
 def addEvent():
     company_name = request.form['company_name']
     job_role = request.form['job_profile']
     event_name = request.form['eventName']
     due_date = request.form['due_date']
-    connection.insert_event_data('eventsdata', company_name,job_role, event_name, due_date)
+    connection.insert_event_data(
+        'eventsdata', company_name, job_role, event_name, due_date)
     return redirect(url_for('home'))
+
 
 @app.route('/viewEvents')
 def viewEvents():
     table = 'eventsdata'
     displayData = connection.get_event_data(table)
     return render_template('view_wishlist.html', display=displayData, table=table, userdisplay=connection.get_signup_data())
+
 
 @app.route('/viewWishlist')
 def viewWishlist():
@@ -121,9 +128,11 @@ def updateJobStatus(dataTable, id, dataTableTargetValue):
     connection.update_data(dataTable, id, dataTableTargetValue)
     return redirect(url_for(display))
 
+
 @app.route("/chart")
 def chart():
     return render_template('chart.html', title='Chart', userdisplay=connection.get_signup_data())
+
 
 @app.route("/chartdata")
 def chartdata():
@@ -139,9 +148,11 @@ def chartdata():
     }
     return jsonify(data)
 
+
 @app.route("/logout")
 def logout():
     return render_template('index.html', title='Logout')
+
 
 @app.route("/")
 @app.route("/index")
@@ -166,7 +177,8 @@ def register():
             if form.username.data == username:
                 v_flag
                 v_flag = "True"
-                flash(f'User name {form.username.data} already exist! Please use another username', 'danger')
+                flash(
+                    f'User name {form.username.data} already exist! Please use another username', 'danger')
         if v_flag == "False":
             flash(f'Account created for {form.username.data}!', 'success')
             print(form.username.data)
@@ -175,9 +187,11 @@ def register():
             email = form.email.data
             user_name = form.username.data
             password = form.password.data
-            connection.insert_signup_data(name,school,email, user_name, password)
+            connection.insert_signup_data(
+                name, school, email, user_name, password)
             return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -205,5 +219,38 @@ def login():
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Register', form=form)
+
+
+class RegistrationForm(FlaskForm):
+    name = StringField('Name',
+                       validators=[DataRequired(), Length(min=2, max=50)])
+    school = StringField('School',
+                         validators=[DataRequired(), Length(min=2, max=50)])
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    username = StringField('Username',
+                           validators=[DataRequired(), Length(min=2, max=20)])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password',
+                                     validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Sign Up')
+
+
+class LoginForm(FlaskForm):
+    username = StringField('UserName',
+                           validators=[DataRequired(), Length(min=2, max=20)])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember = BooleanField('Remember Me')
+    submit = SubmitField('Login')
+
+
+def setDataBase():
+    form = LoginForm()
+    if form.validate_on_submit():
+        userdbfun = form.username.data
+        userdbfun = userdbfun.replace(" ", "")
+        return userdbfun
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=7778)
