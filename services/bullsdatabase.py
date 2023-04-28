@@ -30,15 +30,16 @@ def update_signup_flag(userflag, userid):
    connection.commit()
    connection.close()
 
-userdb = ""
-dbname = get_signup_data()
-for user in dbname:
-    if user['flag'] == 'True':
-        userdb = user['user_name'].replace(" ","")
-print(userdb)
+def dataName():
+    dbname = get_signup_data()
+    for user in dbname:
+        if user['flag'] == 'True':
+            userdbfun = user['user_name'].replace(" ","")
+    print('connected to db'+ userdbfun)
+    return userdbfun
 
 def insert_event_data(dataTable, company_name,job_role, event_name, due_date):
-    connection = sqlite3.connect('./models/'+userdb+'DataBase.db')
+    connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
     dbrequest = connection.cursor()
     dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name, job_role, event_name, due_date)".format(dataTable))
 
@@ -49,7 +50,8 @@ def insert_event_data(dataTable, company_name,job_role, event_name, due_date):
     connection.close()
 
 def get_event_data(dataTable):
-   connection = sqlite3.connect('./models/'+userdb+'DataBase.db')
+   print('debug2'+dataName())
+   connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
    dbrequest = connection.cursor()
    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name, job_role, event_name, due_date)".format(dataTable))
    connection.commit()
@@ -59,7 +61,7 @@ def get_event_data(dataTable):
    return displayData
 
 def insert_data(dataTable, company_name, job_role, applied_on, location, salary, job_status):
-    connection = sqlite3.connect('./models/'+userdb+'DataBase.db')
+    connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
     dbrequest = connection.cursor()
     dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name TEXT,job_role TEXT,\
                       applied_on TEXT,location TEXT,salary NUMERIC,job_status TEXT)".format(dataTable))
@@ -71,7 +73,7 @@ def insert_data(dataTable, company_name, job_role, applied_on, location, salary,
     connection.close()
 
 def get_data(dataTable):
-    connection = sqlite3.connect('./models/'+userdb+'DataBase.db')
+    connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
     dbrequest = connection.cursor()
     dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name TEXT,job_role TEXT,\
                       applied_on TEXT,location TEXT,salary NUMERIC,job_status TEXT)".format(dataTable))
@@ -84,7 +86,7 @@ def get_data(dataTable):
     return displayData
 
 def delete_data(dataTable, id):
-    connection = sqlite3.connect('./models/'+userdb+'DataBase.db')
+    connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
     dbrequest = connection.cursor()
     dbrequest.execute("DELETE FROM {} WHERE id = ?".format(dataTable), (id,))
     connection.commit()
@@ -99,7 +101,7 @@ def update_data(dataTable, id, dataTableTargetValue):
         dataTableTarget = "applieddata"
     if dataTableTargetValue == 'OFFER':
         dataTableTarget = "offerdata"
-    connection = sqlite3.connect('./models/'+userdb+'DataBase.db')
+    connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
     dbrequest = connection.cursor()
     dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name TEXT,job_role TEXT,\
                       applied_on TEXT,location TEXT,salary NUMERIC,job_status TEXT)".format(dataTable))

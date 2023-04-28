@@ -24,3 +24,10 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+def setDataBase():
+    form = LoginForm()
+    if form.validate_on_submit():
+        userdbfun = form.username.data
+        userdbfun = userdbfun.replace(" ","")
+        return userdbfun

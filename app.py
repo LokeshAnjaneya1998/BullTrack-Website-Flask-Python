@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file, url_for, flash, redirect, session
+from flask import Flask, render_template, request, send_file, url_for, flash, redirect
 from forms import RegistrationForm, LoginForm
 import services.bullsdatabase as connection
 
@@ -187,6 +187,5 @@ def login():
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Register', form=form)
-
 if __name__ == '__main__':
     app.run(debug=True, port=7778)
