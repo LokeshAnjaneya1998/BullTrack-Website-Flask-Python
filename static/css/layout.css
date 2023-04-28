@@ -47,3 +47,83 @@ body {
     color: black;
 }
 
+.boarder {
+    padding: 20px 40px;
+}
+
+p {
+    text-align: justify;
+    color: #ffffff;
+}
+
+/* Style the table element */
+table.table1 {
+    margin: 50px auto;
+    border-collapse: collapse;
+    width: 80%;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 5px 10px #006748;
+}
+
+/* Change the background color of the table rows when hovered over */
+table.table1 tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Style the first row of the table */
+table.table1 tr:first-child {
+    background-color: #006748;
+    color: white;
+    text-transform: uppercase;
+}
+
+/* Style the table header cells */
+table.table1 th {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0px 2px 5px #006748;
+}
+
+/* Style the table data cells */
+table.table1 td {
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    text-align: justify;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0px 2px 5px #006748;
+}
+
+/* Style the first data cell in each row */
+table.table1 td:first-child {
+    font-size: 14.99px;
+}
+
+/* Style the image inside the table data cells */
+table.table1 td img {
+    display: block;
+    margin: auto;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: initial;
+    object-position: center center;
+    box-shadow: 0px 2px 5px #006748;
+}
+
+.greetingMsg p {
+    color: #006748;
+}
+
+/* Style the elements with class "boarder" */
+.boarder {
+    padding: 20px 40px;
+}
+
+.section {
+    width: 50%;
+    height: 100%;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  }

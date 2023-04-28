@@ -1,0 +1,22 @@
+{% extends "layout/base-2-col.html" %} {% block content %}
+
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        h2 {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<h2>Visualizing Job Application Data</h2>
+<br>
+<div class="card" style="width: 70rem;">
+    <div class="card-body">
+        <canvas id="job-applications-chart" width="400" height="150%"></canvas>
+    </div>
+</div>
+<script src="/static/js/chart.js"></script>
+{% endblock content %}
