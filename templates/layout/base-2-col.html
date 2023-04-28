@@ -51,30 +51,22 @@
                             {% for content in userdisplay %}
                             {% if content.flag == 'True' %}
                             <h5 class="card-title">{{content.name}}</h5>
-                            <div class="row">
-                                <div class="col">
-                                    <b>School</b>
-                                </div>
-                                <div class="col">
-                                    {{content.school}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <b>Email</b>
-                                </div>
-                                <div class="col">
-                                    {{content.email}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <b>User Name</b>
-                                </div>
-                                <div class="col">
-                                    {{content.user_name}}
-                                </div>
-                            </div>
+                            <table class="table table-hover">
+                                    <tr>
+                                        <td>School:</td>
+                                        <td>{{content.school}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email:</td>
+                                        <td>{{content.email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>User Name:</td>
+                                        <td>{{content.user_name}}</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
                             {% endif %}
                             {% endfor %}
                         </div>

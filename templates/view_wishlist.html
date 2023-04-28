@@ -6,10 +6,15 @@
         <tr>
             <th scope="col">Company</th>
             <th scope="col">Job Role</th>
+            {% if table == 'eventsdata' %}
+            <th scope="col">Event</th>
+            <th scope="col">Due Date</th>
+            {% else %}
             <th scope="col">Applied On</th>
             <th scope="col">Location</th>
             <th scope="col">Salary</th>
             <th scope="col">Status</th>
+            {% endif %}
             <th scope="col">Action</th>
 
     </thead>
@@ -18,6 +23,15 @@
         <tr>
             <td scope="row">{{ content.company_name }}</td>
             <td>{{ content.job_role }}</td>
+            {% if table == 'eventsdata' %}
+            <td>{{ content.event_name }}</td>
+            <td>{{ content.due_date }}</td>
+            <td>
+                <form action="{{ url_for('deleteJob', id=content.id, dataTable=table) }}" method="post">
+                <button class="btn btn-danger" style="margin-left: 10px;"><img src="https://icons.getbootstrap.com/assets/icons/trash.svg"></button>
+                </form>
+            </td>
+            {% else %}
             <td>{{ content.applied_on }}</td>
             <td>{{ content.location }}</td>
             <td>{{ content.salary }}</td>
@@ -50,6 +64,7 @@
                 <button class="btn btn-danger" style="margin-left: 10px;"><img src="https://icons.getbootstrap.com/assets/icons/trash.svg"></button>
                 </form>
             </td>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>

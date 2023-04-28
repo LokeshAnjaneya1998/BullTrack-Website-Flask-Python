@@ -53,8 +53,9 @@ def addEvent():
 
 @app.route('/viewEvents')
 def viewEvents():
-    displayData = connection.get_event_data('eventsdata')
-    return render_template('home', display=displayData, userdisplay=connection.get_signup_data())
+    table = 'eventsdata'
+    displayData = connection.get_event_data(table)
+    return render_template('view_wishlist.html', display=displayData, table=table, userdisplay=connection.get_signup_data())
 
 @app.route('/viewWishlist')
 def viewWishlist():
@@ -94,6 +95,9 @@ def deleteJob(dataTable, id):
     if dataTable == 'OFFER':
         dataTable = "offerdata"
         display = 'viewOffers'
+    if dataTable == 'eventsdata':
+        dataTable = "eventsdata"
+        display = 'viewEvents'
     print(dataTable)
     connection.delete_data(dataTable, id)
     print(id)

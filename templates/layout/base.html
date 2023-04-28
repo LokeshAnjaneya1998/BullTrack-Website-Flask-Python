@@ -59,30 +59,22 @@
                             {% for content in userdisplay %}
                             {% if content.flag == 'True' %}
                             <h5 class="card-title">{{content.name}}</h5>
-                            <div class="row">
-                                <div class="col">
-                                    <b>School</b>
-                                </div>
-                                <div class="col">
-                                    {{content.school}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <b>Email</b>
-                                </div>
-                                <div class="col">
-                                    {{content.email}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <b>User Name</b>
-                                </div>
-                                <div class="col">
-                                    {{content.user_name}}
-                                </div>
-                            </div>
+                            <table class="table table-hover">
+                                    <tr>
+                                        <td>School:</td>
+                                        <td>{{content.school}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email:</td>
+                                        <td>{{content.email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>User Name:</td>
+                                        <td>{{content.user_name}}</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
                             {% endif %}
                             {% endfor %}
                         </div>
@@ -118,7 +110,7 @@
             <!-- Right Sidebar -->
             <div class="col-sm-3 sidenav sidenav-right">
 
-                <div class="card">
+                <div class="card" style="text-align: left;">
                     <div class="card-body">
                         <h5 class="card-title">Upcoming Events</h5>
                         <table class="table table-hover">
@@ -131,17 +123,20 @@
                             </thead>
                             <tbody>
                                 {% for content in displayeve %}
+                                {% if loop.index <= 3 %}
                                 <tr>
                                     <td>{{ content.company_name }}</td>
                                     <td>{{ content.event_name }}</td>
                                     <td>{{ content.due_date }}</td>
                                 </tr>
-
+                                {% endif %}
                                 {% endfor %}
 
-                                <button href="#" class="btn btn-primary" data-toggle="modal" data-target="#addNewEvent">Add New Event</button>
                             </tbody>
+
                         </table>
+                        <a href="/viewEvents?show=applied" class="card-link">View More</a>
+                        <a href="#" class="card-link" data-toggle="modal" data-target="#addNewEvent">Add New</a>
                     </div>
                 </div>
 
