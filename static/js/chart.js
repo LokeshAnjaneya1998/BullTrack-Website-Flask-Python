@@ -1,4 +1,4 @@
-async function cmonth(table) {
+async function cmonth() {
   const response = await fetch('/chartdata');
   const data = await response.json();
 
@@ -6,25 +6,12 @@ async function cmonth(table) {
   const inpchart = data.inpchart.map(item => item.applied_on);
   const appchart = data.appchart.map(item => item.applied_on);
   const offchart = data.offchart.map(item => item.applied_on);
-
-  var chartfetch = "";
-  if (table == 'wish') {
-    chartfetch = wishchart;
-  }
-  if (table == 'inp') {
-    chartfetch = inpchart;
-  }
-  if (table == 'app') {
-    chartfetch = appchart;
-  }
-  if (table == 'off') {
-    chartfetch = offchart;
-  }
-
+  const table = [wishchart, inpchart, appchart, offchart];
+  for(chartfetch of table){
+    console.log(chartfetch);
   var janCount = 0; var febCount = 0; var marchCount = 0; var aprilCount = 0; var mayCount = 0; var juneCount = 0;
   var julyCount = 0; var augCount = 0; var sepCount = 0; var octCount = 0; var novCount = 0; var decCount = 0;
   for (const job of chartfetch) {
-    console.log(table + job);
     var appMonth = job.split("-")[1];
     if (appMonth == 01) { janCount++; }
     if (appMonth == 02) { febCount++; }
@@ -39,18 +26,32 @@ async function cmonth(table) {
     if (appMonth == 11) { novCount++; }
     if (appMonth == 12) { decCount++; }
   }
-  localStorage.setItem(table + 'janCount', janCount);
-  localStorage.setItem(table + 'febCount', febCount);
-  localStorage.setItem(table + 'marchCount', marchCount);
-  localStorage.setItem(table + 'aprilCount', aprilCount);
-  localStorage.setItem(table + 'mayCount', mayCount);
-  localStorage.setItem(table + 'juneCount', juneCount);
-  localStorage.setItem(table + 'julyCount', julyCount);
-  localStorage.setItem(table + 'augCount', augCount);
-  localStorage.setItem(table + 'sepCount', sepCount);
-  localStorage.setItem(table + 'octCount', octCount);
-  localStorage.setItem(table + 'novCount', novCount);
-  localStorage.setItem(table + 'decCount', decCount);
+  var tab = '';
+  if(chartfetch == wishchart){
+    tab = 'wish'
+  }
+  if(chartfetch == inpchart){
+    tab = 'inp'
+  }
+  if(chartfetch == appchart){
+    tab = 'app'
+  }
+  if(chartfetch == offchart){
+    tab = 'off'
+  }
+  localStorage.setItem(tab + 'janCount', janCount);
+  localStorage.setItem(tab + 'febCount', febCount);
+  localStorage.setItem(tab + 'marchCount', marchCount);
+  localStorage.setItem(tab + 'aprilCount', aprilCount);
+  localStorage.setItem(tab + 'mayCount', mayCount);
+  localStorage.setItem(tab + 'juneCount', juneCount);
+  localStorage.setItem(tab + 'julyCount', julyCount);
+  localStorage.setItem(tab + 'augCount', augCount);
+  localStorage.setItem(tab + 'sepCount', sepCount);
+  localStorage.setItem(tab + 'octCount', octCount);
+  localStorage.setItem(tab + 'novCount', novCount);
+  localStorage.setItem(tab + 'decCount', decCount);
+}
 
 }
 
@@ -59,7 +60,11 @@ function monNum(table, mon) {
   return monthValue;
 
 }
+
 const data = {
+  runCmonth: (function() {
+    cmonth();
+  })(),
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   datasets: [{
     label: 'wish List',
@@ -99,7 +104,6 @@ const data = {
       , monNum('off', 'nov'), monNum('off', 'dec')],
   }]
 };
-
 // Configuration options
 const config = {
   type: 'bar',
@@ -120,7 +124,11 @@ const config = {
 // Create chart
 const ctx = document.getElementById('job-applications-chart').getContext('2d');
 const chart = new Chart(ctx, config);
-cmonth('wish')
-cmonth('inp')
-cmonth('app')
-cmonth('off')
+function reloadOnce(page) {
+  if (localStorage.getItem(page+'reload') == '') {
+    console.log(page+'reload');
+    location.reload();
+    localStorage.setItem(page+'reload', 'true');
+  }
+}
+
