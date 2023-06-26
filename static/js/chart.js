@@ -13,18 +13,18 @@ async function cmonth() {
   var julyCount = 0; var augCount = 0; var sepCount = 0; var octCount = 0; var novCount = 0; var decCount = 0;
   for (const job of chartfetch) {
     var appMonth = job.split("-")[1];
-    if (appMonth == 01) { janCount++; }
-    if (appMonth == 02) { febCount++; }
-    if (appMonth == 03) { marchCount++; }
-    if (appMonth == 04) { aprilCount++; }
-    if (appMonth == 05) { mayCount++; }
-    if (appMonth == 06) { juneCount++; }
-    if (appMonth == 07) { julyCount++; }
-    if (appMonth == 08) { augCount++; }
-    if (appMonth == 09) { sepCount++; }
-    if (appMonth == 10) { octCount++; }
-    if (appMonth == 11) { novCount++; }
-    if (appMonth == 12) { decCount++; }
+    if (appMonth == "01") { janCount++; }
+    if (appMonth == "02") { febCount++; }
+    if (appMonth == "03") { marchCount++; }
+    if (appMonth == "04") { aprilCount++; }
+    if (appMonth == "05") { mayCount++; }
+    if (appMonth == "06") { juneCount++; }
+    if (appMonth == "07") { julyCount++; }
+    if (appMonth == "08") { augCount++; }
+    if (appMonth == "09") { sepCount++; }
+    if (appMonth == "10") { octCount++; }
+    if (appMonth == "11") { novCount++; }
+    if (appMonth == "12") { decCount++; }
   }
   var tab = '';
   if(chartfetch == wishchart){

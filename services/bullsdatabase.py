@@ -39,56 +39,58 @@ def dataName():
     return userdbfun
 
 def insert_event_data(dataTable, company_name,job_role, event_name, due_date):
-    connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
+    connection = sqlite3.connect('./models/DataBase.db')
     dbrequest = connection.cursor()
-    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name, job_role, event_name, due_date)".format(dataTable))
+    print('debug'+dataName())
+    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,user_name, company_name, job_role, event_name, due_date)"
+                      .format(dataTable))
 
     connection.commit()
-    dbrequest.execute("INSERT INTO {} (company_name, job_role, event_name, due_date) \
-                      VALUES (?, ?, ?, ?)".format(dataTable), (company_name, job_role, event_name, due_date))
+    dbrequest.execute("INSERT INTO {} (user_name, company_name, job_role, event_name, due_date) \
+                      VALUES (?, ?, ?, ?, ?)".format(dataTable), (dataName(), company_name, job_role, event_name, due_date))
     connection.commit()
     connection.close()
 
 def get_event_data(dataTable):
    print('debug2'+dataName())
-   connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
+   connection = sqlite3.connect('./models/DataBase.db')
    dbrequest = connection.cursor()
-   dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name, job_role, event_name, due_date)".format(dataTable))
+   dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY, user_name, company_name, job_role, event_name, due_date)".format(dataTable))
    connection.commit()
-   dbrequest.execute("SELECT * FROM {} ORDER BY due_date".format(dataTable))
-   displayData = [{'id': row[0], 'company_name': row[1], 'job_role': row[2], 'event_name': row[3], 'due_date': row[4]} for row in dbrequest.fetchall()]
+   dbrequest.execute("SELECT * FROM {} WHERE user_name = '{}' ORDER BY due_date".format(dataTable, dataName()))
+   displayData = [{'id': row[0], 'company_name': row[2], 'job_role': row[3], 'event_name': row[4], 'due_date': row[5]} for row in dbrequest.fetchall()]
    connection.close()
    return displayData
 
 def insert_data(dataTable, company_name, job_role, applied_on, location, salary, job_status):
-    connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
+    connection = sqlite3.connect('./models/DataBase.db')
     dbrequest = connection.cursor()
-    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name TEXT,job_role TEXT,\
+    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,user_name, company_name TEXT,job_role TEXT,\
                       applied_on TEXT,location TEXT,salary NUMERIC,job_status TEXT)".format(dataTable))
 
     connection.commit()
-    dbrequest.execute("INSERT INTO {} (company_name, job_role, applied_on, location, salary, job_status) \
-                      VALUES (?, ?, ?, ?, ?, ?)".format(dataTable), (company_name, job_role, applied_on, location, salary, job_status))
+    dbrequest.execute("INSERT INTO {} (user_name, company_name, job_role, applied_on, location, salary, job_status) \
+                      VALUES (?, ?, ?, ?, ?, ?, ?)".format(dataTable), (dataName(), company_name, job_role, applied_on, location, salary, job_status))
     connection.commit()
     connection.close()
 
 def get_data(dataTable):
-    connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
+    connection = sqlite3.connect('./models/DataBase.db')
     dbrequest = connection.cursor()
-    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name TEXT,job_role TEXT,\
+    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY, user_name, company_name TEXT,job_role TEXT,\
                       applied_on TEXT,location TEXT,salary NUMERIC,job_status TEXT)".format(dataTable))
 
     connection.commit()
-    dbrequest.execute("SELECT * FROM {} ORDER BY applied_on".format(dataTable))
-    displayData = [{'id': row[0], 'company_name': row[1], 'job_role': row[2], 'applied_on': row[3], 'location': row[4], \
-                    'salary': row[5], 'job_status': row[6]} for row in dbrequest.fetchall()]
+    dbrequest.execute("SELECT * FROM {} WHERE user_name = '{}' ORDER BY applied_on".format(dataTable, dataName()))
+    displayData = [{'id': row[0], 'company_name': row[2], 'job_role': row[3], 'applied_on': row[4], 'location': row[5], \
+                    'salary': row[6], 'job_status': row[7]} for row in dbrequest.fetchall()]
     connection.close()
     return displayData
 
 def delete_data(dataTable, id):
-    connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
+    connection = sqlite3.connect('./models/DataBase.db')
     dbrequest = connection.cursor()
-    dbrequest.execute("DELETE FROM {} WHERE id = ?".format(dataTable), (id,))
+    dbrequest.execute("DELETE FROM {} WHERE user_name = '{}' AND id = ?".format(dataTable, dataName()), (id,))
     connection.commit()
     connection.close()
 
@@ -101,34 +103,34 @@ def update_data(dataTable, id, dataTableTargetValue):
         dataTableTarget = "applieddata"
     if dataTableTargetValue == 'OFFER':
         dataTableTarget = "offerdata"
-    connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
+    connection = sqlite3.connect('./models/DataBase.db')
     dbrequest = connection.cursor()
-    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name TEXT,job_role TEXT,\
+    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY, user_name, company_name TEXT,job_role TEXT,\
                       applied_on TEXT,location TEXT,salary NUMERIC,job_status TEXT)".format(dataTable))
 
     connection.commit()
-    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY,company_name TEXT,job_role TEXT,\
+    dbrequest.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY, user_name, company_name TEXT,job_role TEXT,\
                       applied_on TEXT,location TEXT,salary NUMERIC,job_status TEXT)".format(dataTableTarget))
 
     connection.commit()
-    dbrequest.execute("SELECT * FROM {} WHERE id = ?".format(dataTable), (id,))
+    dbrequest.execute("SELECT * FROM {} WHERE user_name = '{}' AND id = ?".format(dataTable, dataName()), (id,))
     data = dbrequest.fetchone()
 
     if data:
-        dbrequest.execute("INSERT INTO {} (company_name, job_role, applied_on, location, salary, job_status) \
-                          VALUES (?, ?, ?, ?, ?, ?)".format(dataTableTarget), (data[1], data[2], data[3], data[4], data[5], dataTableTargetValue))
+        dbrequest.execute("INSERT INTO {} (user_name, company_name, job_role, applied_on, location, salary, job_status) \
+                          VALUES (?, ?, ?, ?, ?, ?, ?)".format(dataTableTarget), (data[1], data[2], data[3], data[4], data[5], data[6], dataTableTargetValue))
         connection.commit()
 
 
-        dbrequest.execute("DELETE FROM {} WHERE id = ?".format(dataTable), (id,))
+        dbrequest.execute("DELETE FROM {} WHERE user_name = '{}' AND id = ?".format(dataTable, dataName()), (id,))
         connection.commit()
 
     connection.close()
 
 def chart_data(dataTable):
-    connection = sqlite3.connect('./models/'+dataName()+'DataBase.db')
+    connection = sqlite3.connect('./models/DataBase.db')
     dbrequest = connection.cursor()
-    dbrequest.execute("SELECT applied_on FROM {}".format(dataTable))
+    dbrequest.execute("SELECT applied_on FROM {} WHERE user_name = '{}'".format(dataTable, dataName()))
     displayData = [{'applied_on': row[0]} for row in dbrequest.fetchall()]
 
     connection.commit()
